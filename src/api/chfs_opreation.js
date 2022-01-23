@@ -1,9 +1,14 @@
+/**
+ * 本文件用于非搜索状态下的数据处理。搜索状态下的文件请找：search_operation.js
+ * 需要注意的是API的请求地址为Nginx的监听地址，并且需要代理请求chfs开头的api地址到chfs服务所在端口
+ * @author:Equent
+ */
+
 import store from '../store'
 import axios from "axios";
 import {Message,Notification,MessageBox} from 'element-ui'
-import sc from "@/api/server_config";
 
-//排序文件公共方法
+//排序文件公共方法，文件夹在前，文件在后
 function sortList(data){
   data.files.sort((a,b)=>{
     let a2 = a.dir===false ? 1 : 0
@@ -81,25 +86,14 @@ export default {
       message: `服务器已响应，正在准备文件……
       若文件过大则需要等待一段时间，请勿重复请求下载！`,
       showClose: true,
-      duration: 10000
+      duration: 10000,
+      offset: 60
     })
     let url = '/chfs/shared' + store.state.filePath.filePath[store.state.filePath.filePath.length - 1].path + '/' + fileName
     let a = document.createElement('a');
     a.href = url
     a.download = fileName;
     a.click()
-    /*let x = new XMLHttpRequest();
-    x.open("GET", url, true);
-    x.responseType = 'blob';
-    x.onload=function(e) {
-      //创建一个 DOMString，其中包含一个表示参数中给出的对象的URL。这个 URL 的生命周期和创建它的窗口中的 document 绑定。这个新的URL 对象表示指定的 File 对象或 Blob 对象。
-      let url = window.URL.createObjectURL(x.response)
-      let a = document.createElement('a');
-      a.href = url
-      a.download = fileName;
-      a.click()
-    }
-    x.send();*/
   },
   //下载文件夹
   downloadDir(fileName){
@@ -107,7 +101,8 @@ export default {
       title: '来自服务器的消息',
       message: `服务器已响应，正在准备文件……`,
       showClose: true,
-      duration: 10000
+      duration: 10000,
+      offset: 60
     })
     //下载文件夹不需要blob转换跨域问题，所以直接使用后端url即可
     let url = '/chfs/downloaddir' + store.state.filePath.filePath[store.state.filePath.filePath.length - 1].path + '/' + fileName

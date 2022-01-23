@@ -9,6 +9,8 @@
                  v-show="this.$store.state.tableData.tableData.currentMask.includes('W')">新建目录</el-button>
       <el-button size="medium" type="success" id="new-text" plain round @click="newTextVisible = true"
                  v-show="this.$store.state.tableData.tableData.currentMask.includes('W')">新建文本</el-button>
+      <el-button size="medium" type="" id="backPath" plain round @click="backView"
+                 v-show="searchStatus">返回目录视图</el-button>
       <el-input placeholder="请输入搜索内容" class="searchClass" v-model="searchInput" size="medium">
         <div slot="prepend">
           <div class="centerClass">
@@ -21,7 +23,7 @@
             <div class="line"></div>
           </div>
         </div>
-        <el-button slot="append" icon="el-icon-search"></el-button>
+        <el-button slot="append" icon="el-icon-search" @click="searchFiles"></el-button>
       </el-input>
     </div><br/>
 <!--    表格部分-->
@@ -172,6 +174,7 @@ export default {
       qrcodeVisible: false,
       newTextVisible: false,
       uploadProcessVisible: false,
+      searchStatus: false,
       process: [],
       qrstat: false, //首次打开二维码标志，首次打开前为false
       tableHeight: document.documentElement.clientHeight - 187 //table高度
@@ -201,13 +204,13 @@ export default {
       let word = ['docx','doc','rtf']
       let ppt = ['pptx','ppt']
       let excel = ['xlsx','xls']
-      if(image.indexOf(index) != -1) {return 'image'}
-      else if(video.indexOf(index) != -1) {return 'video'}
-      else if(audio.indexOf(index) != -1) {return 'audio'}
-      else if(zip.indexOf(index) != -1) {return 'zip'}
-      else if(word.indexOf(index) != -1){return 'word'}
-      else if(ppt.indexOf(index) != -1){return 'ppt'}
-      else if(excel.indexOf(index) != -1){return 'excel'}
+      if(image.indexOf(index) !== -1) {return 'image'}
+      else if(video.indexOf(index) !== -1) {return 'video'}
+      else if(audio.indexOf(index) !== -1) {return 'audio'}
+      else if(zip.indexOf(index) !== -1) {return 'zip'}
+      else if(word.indexOf(index) !== -1){return 'word'}
+      else if(ppt.indexOf(index) !== -1){return 'ppt'}
+      else if(excel.indexOf(index) !== -1){return 'excel'}
       else if(index === 'pdf'){return 'pdf'}
       else if(index === 'txt'){return 'txt'}
       else return 'unknown'
@@ -397,9 +400,48 @@ export default {
       this.enterFile(dirName,true)
       await this.uploadFiles(fileObj)
     },
+
+    //搜索文件判断
+    searchFiles(){
+      if(this.select === '1'){
+        this.searchCurrent()
+      }else{
+        this.searchAll()
+      }
+    },
+    //搜索当前页
+    searchCurrent(){
+      let tableData2 = this.tableData()
+      let tableDataSearch = {
+        virtualRoot: 0,
+        currentMask: "RD",
+        files: []
+      }
+      for(let i=0 ; i < tableData2.files.length ; i++){
+        if(tableData2.files[i].name.indexOf(this.searchInput)>=0){
+          tableDataSearch.files.push(tableData2.files[i])
+        }
+      }
+      console.log(tableDataSearch)
+      this.searchStatus = true
+      this.$store.state.tableData.tableData = tableDataSearch
+    },
+    //搜索全部文件
+    searchAll(){
+      this.$router.push({
+        name:'search_file',
+        query:{searchString:this.searchInput}
+      })
+    },
+    //搜索后返回目录
+    backView(){
+      this.searchStatus = false
+      chfs.getFileList()
+    },
     //vuex自带方法，路径添加
     ...mapMutations('filePath',{addPath:"ADDPATH"}),
     ...mapState('filePath',['filePath']),
+    ...mapState('tableData',['tableData']),
   },
   //过滤器
   filters: {

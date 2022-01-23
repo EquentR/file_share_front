@@ -4,6 +4,7 @@ import VueRouter from "vue-router";
 import Login from "@/views/pages/Login";
 import Index from "@/views/pages/Index";
 import FileList from "@/views/pages/FileList";
+import SearchList from "@/views/pages/SearchList";
 
 export default new VueRouter({
     routes:[
@@ -50,6 +51,14 @@ export default new VueRouter({
                     name: 'exat_file',
                     path: 'zip',
                     component: FileList
+                },
+                {
+                    name: 'search_file',
+                    path: 'search',
+                    component: SearchList,
+                    props({query:{searchString}}){
+                        return {searchString}
+                    }
                 }
             ]
         }

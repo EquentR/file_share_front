@@ -2,7 +2,7 @@
   <el-container>
     <el-header height="60px">
       <p class="logo_text">文件共享台</p>
-      <Breadcrumb/>
+      <Breadcrumb v-show="breadVisible"/>
       <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" @click="dialogVisible = true"></el-avatar>
     </el-header>
     <el-container>
@@ -61,7 +61,17 @@ export default {
     return{
       username: 'root',
       dialogVisible: false,
-      modeIndex: 'all'
+      modeIndex: 'all',
+      breadVisible: true
+    }
+  },
+  watch:{
+    $route(to,from){
+      if(to.path === '/index/all'){
+        this.breadVisible = true
+      }else{
+        this.breadVisible = false
+      }
     }
   },
   methods:{
