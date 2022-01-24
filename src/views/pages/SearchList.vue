@@ -135,14 +135,15 @@ export default {
       tableHeight: document.documentElement.clientHeight - 187 //table高度
     }
   },
-  props:['searchString'],
+  props:['searchString','fileType'],
   methods:{
     //获取文件图标方法
     getFileIcon(fileName,type){
-      fileName = fileName.toString()
+
       if(type){
         return 'folder'
       }else{
+        fileName = fileName.toString()
         return this.getFileLast(fileName)
       }
     },
@@ -159,15 +160,15 @@ export default {
       let word = ['docx','doc','rtf']
       let ppt = ['pptx','ppt']
       let excel = ['xlsx','xls']
-      if(image.indexOf(index) !== -1) {return 'image'}
-      else if(video.indexOf(index) !== -1) {return 'video'}
-      else if(audio.indexOf(index) !== -1) {return 'audio'}
-      else if(zip.indexOf(index) !== -1) {return 'zip'}
-      else if(word.indexOf(index) !== -1){return 'word'}
-      else if(ppt.indexOf(index) !== -1){return 'ppt'}
-      else if(excel.indexOf(index) !== -1){return 'excel'}
-      else if(index === 'pdf'){return 'pdf'}
-      else if(index === 'txt'){return 'txt'}
+      if(image.indexOf(index.toLowerCase()) !== -1) {return 'image'}
+      else if(video.indexOf(index.toLowerCase()) !== -1) {return 'video'}
+      else if(audio.indexOf(index.toLowerCase()) !== -1) {return 'audio'}
+      else if(zip.indexOf(index.toLowerCase()) !== -1) {return 'zip'}
+      else if(word.indexOf(index.toLowerCase()) !== -1){return 'word'}
+      else if(ppt.indexOf(index.toLowerCase()) !== -1){return 'ppt'}
+      else if(excel.indexOf(index.toLowerCase()) !== -1){return 'excel'}
+      else if(index.toLowerCase() === 'pdf'){return 'pdf'}
+      else if(index.toLowerCase() === 'txt'){return 'txt'}
       else return 'unknown'
     },
     //禁止进入文件夹
@@ -311,14 +312,35 @@ export default {
     }
   },
   mounted() {
-    this.searchInput = this.searchString
-    this.$store.state.tableData.tableData = {}
-    search.searchAllFileList(this.searchInput)
+    this.$store.state.tableData.tableData = {
+      currentMask: "R",
+      files: [],
+      virtualRoot: 0
+    }
+    if(this.searchString !== undefined){
+      this.searchInput = this.searchString
+      search.searchAllFileList(this.searchInput)
+    }else{
+      search.getFileTypeList(this.fileType)
+    }
     //获取屏幕高度，并动态调整table高度
     window.onresize = () => {
       this.tableHeight = document.documentElement.clientHeight - 187
     }
   },
+  watch:{
+    $route(to,from){
+      if(this.searchString === undefined){
+        this.$store.state.tableData.tableData = {
+          currentMask: "R",
+          files: [],
+          virtualRoot: 0
+        }
+        search.getFileTypeList(this.fileType)
+      }
+    }
+  }
+
 }
 </script>
 

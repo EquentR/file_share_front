@@ -77,4 +77,19 @@ export default {
       }
     )
   },
+  //文件分类相关——搜索指定格式
+  async getFileTypeList(fileType){
+    for(let i = 0; i < fileType.length; i++){
+      await axios.get(`/chfs/search?str=${fileType[i]}`).then(
+        response => {
+          console.log(response.data.files)
+          let tmp = response.data.files
+          store.commit('tableData/ADDDATA',tmp)
+        },
+        error => {
+          Message.error('分类获取失败！请重试...')
+        }
+      )
+    }
+  }
 }

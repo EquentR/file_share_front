@@ -204,15 +204,15 @@ export default {
       let word = ['docx','doc','rtf']
       let ppt = ['pptx','ppt']
       let excel = ['xlsx','xls']
-      if(image.indexOf(index) !== -1) {return 'image'}
-      else if(video.indexOf(index) !== -1) {return 'video'}
-      else if(audio.indexOf(index) !== -1) {return 'audio'}
-      else if(zip.indexOf(index) !== -1) {return 'zip'}
-      else if(word.indexOf(index) !== -1){return 'word'}
-      else if(ppt.indexOf(index) !== -1){return 'ppt'}
-      else if(excel.indexOf(index) !== -1){return 'excel'}
-      else if(index === 'pdf'){return 'pdf'}
-      else if(index === 'txt'){return 'txt'}
+      if(image.indexOf(index.toLowerCase()) !== -1) {return 'image'}
+      else if(video.indexOf(index.toLowerCase()) !== -1) {return 'video'}
+      else if(audio.indexOf(index.toLowerCase()) !== -1) {return 'audio'}
+      else if(zip.indexOf(index.toLowerCase()) !== -1) {return 'zip'}
+      else if(word.indexOf(index.toLowerCase()) !== -1){return 'word'}
+      else if(ppt.indexOf(index.toLowerCase()) !== -1){return 'ppt'}
+      else if(excel.indexOf(index.toLowerCase()) !== -1){return 'excel'}
+      else if(index.toLowerCase() === 'pdf'){return 'pdf'}
+      else if(index.toLowerCase() === 'txt'){return 'txt'}
       else return 'unknown'
     },
     //进入目录

@@ -7,23 +7,23 @@
     </el-header>
     <el-container>
       <el-aside width="250px">
-        <el-menu default-active="all" :router="true">
-          <el-menu-item index="all">
+        <el-menu :default-active="$route.path" :router="true">
+          <el-menu-item index="/index/all">
             <AllFileIcon class="icon"/><p class="context">所有文件</p>
           </el-menu-item>
-          <el-menu-item index="img">
+          <el-menu-item index="/index/img">
             <ImgFileIcon class="icon"/><p class="context">图片文件</p>
           </el-menu-item>
-          <el-menu-item index="doc">
+          <el-menu-item index="/index/doc">
             <DocFileIcon class="icon"/><p class="context">文档文件</p>
           </el-menu-item>
-          <el-menu-item index="video">
+          <el-menu-item index="/index/video">
             <VideoFileIcon class="icon"/><p class="context">视频文件</p>
           </el-menu-item>
-          <el-menu-item index="audio">
+          <el-menu-item index="/index/audio">
             <AudioFileIcon class="icon"/><p class="context">音频文件</p>
           </el-menu-item>
-          <el-menu-item index="zip">
+          <el-menu-item index="/index/zip">
             <ExatFileIcon class="icon"/><p class="context">压缩文件</p>
           </el-menu-item>
         </el-menu>

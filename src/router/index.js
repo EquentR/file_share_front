@@ -30,27 +30,42 @@ export default new VueRouter({
                 {
                     name: 'img_file',
                     path: 'img',
-                    component: FileList
+                    component: SearchList,
+                    props:{
+                        fileType: ['.jpg','.jpe','.png','.ico','.psd','.gif','.bmp','.tif','.jpeg','.dng','.cr2']
+                    }
                 },
                 {
                     name: 'doc_file',
                     path: 'doc',
-                    component: FileList
+                    component: SearchList,
+                    props:{
+                        fileType: ['.doc','.rtf','.ppt','.xls','.pdf','.txt']
+                    }
                 },
                 {
                     name: 'vid_file',
                     path: 'video',
-                    component: FileList
+                    component: SearchList,
+                    props:{
+                        fileType: ['.avi','.mp4','.mov','.asf','.rm','.qt','.ram','.m4v','.rmvb','.flv','.mpg','.mkv','.mp2']
+                    }
                 },
                 {
                     name: 'aud_file',
                     path: 'audio',
-                    component: FileList
+                    component: SearchList,
+                    props: {
+                        fileType: ['.aac','.mp3','.m4a','.wav','.ape','.wma','.ogg','.flac']
+                    }
                 },
                 {
                     name: 'exat_file',
                     path: 'zip',
-                    component: FileList
+                    component: SearchList,
+                    props: {
+                        fileType: ['.rar','.zip','.7z','.cab','.jar','.lz','.tar','.gz','.xz','.001','.uue','.arj']
+                    }
                 },
                 {
                     name: 'search_file',
