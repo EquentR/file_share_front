@@ -4,6 +4,6 @@
  */
 
 export default {
-  shareServer: 'http://localhost:3007', //dev
-  // shareServer: 'http://120.25.222.200:3007', //proc
+  // shareServer: 'http://localhost:3007', //dev
+  shareServer: 'http://120.25.222.200:3007', //proc
 }
