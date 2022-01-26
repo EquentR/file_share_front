@@ -27,8 +27,6 @@ export default {
       chfs.login(this.user,this.pwd).then(
         response => {
           if(response.status === 201){
-            console.log(response)
-            sessionStorage.setItem('user',this.user)
             this.$message.success('登录成功！')
             this.$router.push({
               path:'/index'
@@ -52,11 +50,18 @@ export default {
       )
     },
     unLogin(){
-      chfs.logout()
-      this.$router.push({
-        path: '/index'
-      })
-      location.reload()
+      let user = chfs.getCookie('user')
+      if(user === undefined){
+        this.$router.push({
+          path: '/index'
+        })
+      }else{
+        chfs.logout()
+        this.$router.push({
+          path: '/index'
+        })
+        location.reload()
+      }
     }
   },
 }

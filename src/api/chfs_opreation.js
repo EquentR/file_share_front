@@ -178,4 +178,12 @@ export default {
   async logout(){
     return await axios.delete('/chfs/session')
   },
+  //获取指定cookie
+  getCookie(objName){//获取指定名称的cookie的值
+    let arr = document.cookie.split("; ");
+    for(let i = 0;i < arr.length;i ++){
+      let temp = arr[i].split("=");
+      if(temp[0] == objName) return unescape(temp[1]);
+    }
+  },
 }
