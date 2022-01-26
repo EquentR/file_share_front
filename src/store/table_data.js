@@ -21,7 +21,7 @@ export default {
       virtualRoot: 0,
       currentMask: "RWD",
       files: []
-    }
+    },
   },
   getters:{
 

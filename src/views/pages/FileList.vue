@@ -177,7 +177,8 @@ export default {
       searchStatus: false,
       process: [],
       qrstat: false, //首次打开二维码标志，首次打开前为false
-      tableHeight: document.documentElement.clientHeight - 187 //table高度
+      tableHeight: document.documentElement.clientHeight - 187, //table高度
+      tipText: ''
     }
   },
   components: {QRCode},

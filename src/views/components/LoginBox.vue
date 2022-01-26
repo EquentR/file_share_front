@@ -1,27 +1,64 @@
 <template>
   <div id="box">
     <p class="title">登录</p>
-    <input class="user-input" id="u" type="text" placeholder="用户名">
-    <input class="user-input" id="p" type="password" placeholder="密码">
+    <input class="user-input" id="u" type="text" placeholder="用户名" v-model="user">
+    <input class="user-input" id="p" type="password" placeholder="密码" v-model="pwd">
     <button @click="submit()" class="submit">登录</button><br>
     <div class="unsub">
-      <router-link class="unsubmit" to="/index">不登录，直接查看文件</router-link>
+      <a class="unsubmit" @click="unLogin">不登录，直接查看文件</a>
     </div>
   </div>
 </template>
 
 <script>
 import AllFileIcon from "@/views/components/icon/AllFileIcon";
+import chfs from "@/api/chfs_opreation";
 export default {
   name: "LoginBox",
   components:{AllFileIcon},
+  data(){
+    return{
+      user: '',
+      pwd: ''
+    }
+  },
   methods:{
     submit(){
+      chfs.login(this.user,this.pwd).then(
+        response => {
+          if(response.status === 201){
+            console.log(response)
+            sessionStorage.setItem('user',this.user)
+            this.$message.success('登录成功！')
+            this.$router.push({
+              path:'/index'
+            })
+          }else{
+            this.$message.error('未知错误！')
+          }
+        },
+        error => {
+          let code = error.response.status
+          if(code === 400){
+            this.$message.error('参数错误！')
+          }else if(code === 404){
+            this.$message.error('用户名或密码错误！')
+          }else if(code === 500){
+            this.$message.error('服务器错误！')
+          }else{
+            this.$message.error('未知错误！')
+          }
+        }
+      )
+    },
+    unLogin(){
+      chfs.logout()
       this.$router.push({
-        path:'/index',
+        path: '/index'
       })
+      location.reload()
     }
-  }
+  },
 }
 </script>
 

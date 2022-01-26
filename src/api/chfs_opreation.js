@@ -26,7 +26,7 @@ export default {
         store.state.tableData.tableData = sortList(response.data)
       },
       error=>{
-        console.log('fail')
+        Message.error('获取列表失败，请刷新页面')
       }
     )
   },
@@ -166,5 +166,16 @@ export default {
   //上传文件
   uploadFile(fileObj){
     //此方法在FileList组件中
-  }
+  },
+  //登录操作
+  async login(user,pwd){
+    let formData = new FormData()
+    formData.append('user', user)
+    formData.append('pwd',pwd)
+    return await axios.post('/chfs/session',formData);
+  },
+  //登出操作
+  async logout(){
+    return await axios.delete('/chfs/session')
+  },
 }

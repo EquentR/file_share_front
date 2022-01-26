@@ -3,7 +3,8 @@
     <el-header height="60px">
       <p class="logo_text">文件共享台</p>
       <Breadcrumb v-show="breadVisible"/>
-      <el-avatar src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" @click="dialogVisible = true"></el-avatar>
+      <img src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" class="avatar" @click="logout" v-show="userName!==undefined">
+      <el-button icon="el-icon-user" circle class="avatar" v-show="userName===undefined" @click="login" type="info" plain></el-button>
     </el-header>
     <el-container>
       <el-aside width="250px">
@@ -45,6 +46,7 @@ import ImgFileIcon from "@/views/components/icon/ImgFileIcon";
 import DocFileIcon from "@/views/components/icon/DocFileIcon";
 import FileList from "@/views/pages/FileList";
 import Breadcrumb from "@/views/components/Breadcrumb";
+import chfs from "@/api/chfs_opreation";
 export default {
   name: "Index",
   components:{
@@ -59,10 +61,10 @@ export default {
   },
   data(){
     return{
-      username: 'root',
       dialogVisible: false,
       modeIndex: 'all',
-      breadVisible: true
+      breadVisible: true,
+      userName: this.getCookie('user')
     }
   },
   watch:{
@@ -75,7 +77,55 @@ export default {
     }
   },
   methods:{
-
+    //退出登录
+    logout(){
+      this.$confirm(`退出${this.userName}的登录状态吗？`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        chfs.logout().then(
+          response => {
+            this.$message({
+              type: 'success',
+              message: '退出登录'
+            });
+          },
+          error => {
+            this.$message({
+              type: 'error',
+              message: '登录凭据无效！'
+            });
+          }
+        )
+        this.$router.push({
+          path: '/login',
+        })
+        this.userName = null
+      }).catch(() => {
+      });
+    },
+    //返回登录界面
+    login(){
+      this.$confirm(`登录账号吗？`, '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'info'
+      }).then(() => {
+        this.$router.push({
+          path: '/login',
+        })
+      }).catch(() => {
+      });
+    },
+    //获取指定cookie
+    getCookie(objName){//获取指定名称的cookie的值
+      let arr = document.cookie.split("; ");
+      for(let i = 0;i < arr.length;i ++){
+        let temp = arr[i].split("=");
+        if(temp[0] == objName) return unescape(temp[1]);
+      }
+    },
   },
   mounted() {
 
@@ -139,9 +189,13 @@ export default {
   .context{
     padding-top: 16px;
   }
-  .el-avatar{
+  .avatar{
+    height: 40px;
+    width: 40px;
+    border-radius: 20px;
     margin-top: 10px;
     float: right;
+    cursor: pointer
   }
   .bread{
     float: left;
