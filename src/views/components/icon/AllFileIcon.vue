@@ -9,6 +9,7 @@ export default {
 </script>
 <style scoped>
   .icon{
-    background-image: url("列 全部文件.svg");
+    background: url("列 全部文件.svg") no-repeat;
+    background-size: 100%;
   }
 </style>

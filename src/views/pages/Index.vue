@@ -1,13 +1,14 @@
 <template>
   <el-container>
     <el-header height="60px">
-      <p class="logo_text">文件共享台</p>
+      <div class="logo_text" @click="sideControl"></div>
+<!--      <p class="logo_text">文件共享台</p>-->
       <Breadcrumb v-show="breadVisible"/>
       <img src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" class="avatar" @click="logout" v-show="userName!==undefined">
       <el-button icon="el-icon-user" circle class="avatar" v-show="userName===undefined" @click="login" type="info" plain></el-button>
     </el-header>
     <el-container>
-      <el-aside width="250px">
+      <el-aside width="215px" v-show="isSide">
         <el-menu :default-active="$route.path" :router="true">
           <el-menu-item index="/index/all">
             <AllFileIcon class="icon"/><p class="context">所有文件</p>
@@ -64,6 +65,7 @@ export default {
       dialogVisible: false,
       modeIndex: 'all',
       breadVisible: true,
+      isSide: true,
       userName: chfs.getCookie('user')
     }
   },
@@ -118,6 +120,14 @@ export default {
       }).catch(() => {
       });
     },
+    //侧边栏控制
+    sideControl(){
+      if(this.isSide === true){
+        this.isSide = false
+      }else{
+        this.isSide = true
+      }
+    }
   },
   mounted() {
 
@@ -127,16 +137,15 @@ export default {
 
 <style scoped>
   .logo_text{
-    margin-top: 10px;
-    margin-left: 35px;
-    width: 150px;
-    height: 44px;
+    margin-top: 15px;
+    width: 200px;
+    height: 35px;
     text-align: left;
-    font: normal normal bold 30px Source Han Sans SC;
     letter-spacing: 0px;
-    color: #000000;
-    opacity: 0.6;
     float: left;
+    background: url("head_logo.svg") no-repeat;
+    background-size: 200px;
+    cursor: pointer;
   }
   .el-header{
     background: #ffffff 0% 0% no-repeat padding-box;
@@ -145,6 +154,8 @@ export default {
     line-height: 80px;
     border-bottom: #2b542c;
     z-index: 2;
+    padding-left: 15px;
+    padding-right: 20px;
   }
   .el-container{
     height: 100%;
@@ -159,14 +170,14 @@ export default {
     height: 100%;
   }
   .el-menu-item{
-    margin-top: 17px;
-    margin-bottom: 17px;
-    margin-left: 16px;
-    width: 219px;
-    height: 80px;
+    margin-top: 18px;
+    margin-bottom: 15px;
+    margin-left: 18px;
+    width: 180px;
+    height: 60px;
     border-radius: 20px;
     opacity: 0.8;
-    font-size: 30px ;
+    font-size: 24px !important;
     letter-spacing: 0px;
     color: #526063;
     font: normal normal bold 30px Source Han Sans SC;
@@ -175,11 +186,12 @@ export default {
     color: #526063;
   }
   .icon{
-    margin-top: 18px;
+    margin-top: 13px;
+    margin-left: 2px;
     float: left;
   }
   .context{
-    padding-top: 16px;
+    padding-top: 11px;
   }
   .avatar{
     height: 40px;
@@ -191,9 +203,9 @@ export default {
   }
   .bread{
     float: left;
-    margin-top: 25px;
+    margin-top: 24px;
     font-size: 15px;
-    padding-left: 70px;
+    padding-left: 40px;
   }
   .el-menu{
     border-right: 0px !important;
